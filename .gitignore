@@ -1,0 +1,7 @@
+BDsoSharpenImage.xcodeproj/xcuserdata/
+BDsoSharpenImage.xcworkspace/
+Pods/
+*.swp
+Podfile.lock
+.DS_Store
+BDsoSharpenImage.xcodeproj/project.xcworkspace/xcuserdata/
