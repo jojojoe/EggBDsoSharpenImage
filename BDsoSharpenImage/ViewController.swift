@@ -37,8 +37,8 @@ class ViewController: UIViewController {
                 $0.width.equalTo(175)
                 $0.height.equalTo(48)
             }
-            .image(UIImage(named: ""))
-            .title("Sharpen")
+            .image(UIImage(named: "effect"))
+            .title(" Sharpen")
             .font(UIFont.FontName_PoppinsBold, 32)
             .titleColor(UIColor(hexString: "#22214B")!)
             .target(target: self, action: #selector(settingBtnClick), event: .touchUpInside)
@@ -52,7 +52,7 @@ class ViewController: UIViewController {
                 $0.width.equalTo(71)
                 $0.height.equalTo(32)
             }
-            .image(UIImage(named: ""))
+            .image(UIImage(named: "homeproicon"))
             .target(target: self, action: #selector(upoproBtnClick), event: .touchUpInside)
         //
         let cellw: CGFloat = CGFloat(Int((UIScreen.width() - (BDsoToManager.default.cpadding * CGFloat((BDsoToManager.default.featureList.count + 1)))) / CGFloat(BDsoToManager.default.featureList.count)))
