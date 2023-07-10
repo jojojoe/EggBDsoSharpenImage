@@ -31,7 +31,7 @@ class BDsoFeaturePreviewList: UIView {
         scalingCarousel.delegate = self
         scalingCarousel.translatesAutoresizingMaskIntoConstraints = false
         scalingCarousel.backgroundColor = .white
-        
+        scalingCarousel.contentSize = CGRect(x: 0, y: 0, width: 0, height: 0)
         scalingCarousel.register(BDsoFeaturePreviewCell.self, forCellWithReuseIdentifier: "BDsoFeaturePreviewCell")
         
         addSubview(scalingCarousel)

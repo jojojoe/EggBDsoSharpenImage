@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
 
     let bgCoverImgV = UIImageView()
-    
+    let contentBgV = UIView()
     
     let featureTypeCollection = BDsoFeatureTypeCollection()
     let previewListCollection = BDsoFeaturePreviewList()
@@ -18,6 +18,13 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupContentView()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+//        setup
+        
+        contentBgV.addSubview(previewListCollection)
     }
     
     func setupContentView() {
@@ -72,13 +79,14 @@ class ViewController: UIViewController {
             }
         }
         //
+        contentBgV.adhere(toSuperview: view) {
+            $0.left.right.equalToSuperview()
+            $0.top.equalTo(featureTypeCollection.snp.bottom).offset(60)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-160)
+        }
+        //
         
-        previewListCollection
-            .adhere(toSuperview: view) {
-                $0.left.right.equalToSuperview()
-                $0.top.equalTo(featureTypeCollection.snp.bottom).offset(60)
-                $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-160)
-            }
+      
         
         //
         let usereffectBtn = UIButton()
@@ -86,6 +94,7 @@ class ViewController: UIViewController {
                 $0.centerX.equalToSuperview()
                 $0.width.equalTo(290)
                 $0.height.equalTo(60)
+                $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-50)
             }
             .backgroundColor(UIColor(hexString: "#22214B")!)
             .cornerRadius(30)
