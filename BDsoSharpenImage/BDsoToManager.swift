@@ -9,10 +9,10 @@ import UIKit
 
 enum FeatureType {
     case sharpen
-    case enhancer
+    case denoise
     case repair
     case restoration
-    case denoise
+    case enhancer
     case enlarge
 }
 
@@ -108,6 +108,40 @@ class BDsoToManager: NSObject {
         currentSelectItem = sharpenItem
     }
     
+    func processBase64Img(img: UIImage) -> String? {
+        let maxLenght = max(img.size.width, img.size.height)
+        let minLenght = min(img.size.width, img.size.height)
+        if (maxLenght / minLenght > 4.0) {
+            
+            return "error_1"
+        }
+        var targetImg: UIImage? = img
+        if maxLenght > 4000 {
+            if img.size.width > img.size.height {
+                targetImg = img.scaled(toWidth: 2048)
+            } else {
+                targetImg = img.scaled(toHeight: 2048)
+            }
+        }
+        if let basestr = targetImg?.jpegBase64String(compressionQuality: 0.8) {
+            let encodeStr = self.urlEncodeString(basestr)
+            return encodeStr
+        }
+       
+        return nil
+    }
+    
+    func processImgFrom(base64: String) -> UIImage? {
+        let img = UIImage(base64String: base64)
+        return img
+    }
+    
+    // 对字符串进行UrlEncode
+    func urlEncodeString(_ string: String) -> String? {
+        return string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+    }
+
+    
     /*
      图像色彩增强
 
@@ -121,6 +155,8 @@ class BDsoToManager: NSObject {
 
      图像无损放大
      
+     base64编码后大小不超过10M(参考：原图大约为8M以内），最短边至少10px，最长边最大5000px，长宽比4：1以内。注意：图片的base64编码是不包含图片头的，如（data:image/jpg;base64,）
+     图像数据，base64编码字符串，大小不超过4M，最短边至少50px，最长边最大4096px，支持jpg/bmp/png格式
      */
 }
 

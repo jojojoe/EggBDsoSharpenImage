@@ -20,10 +20,12 @@ target 'BDsoSharpenImage' do
   pod 'SwifterSwift'
   pod 'SwiftyStoreKit'
   pod 'TPInAppReceipt'
-  pod 'TLPhotoPicker'
+  pod 'SwiftyJSON'
   pod 'Moya'
+  pod 'MoyaSugar'
   pod 'Alamofire'
   pod 'DeviceKit'
   pod 'LGSideMenuController'
   pod 'ScalingCarousel'
+  pod 'EllipsePageControl'
 end

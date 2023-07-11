@@ -24,6 +24,14 @@
 		EB04E6342A55665800C62C70 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB04E62F2A55665700C62C70 /* Poppins-Regular.ttf */; };
 		EB04E6352A55665800C62C70 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB04E6302A55665800C62C70 /* Poppins-SemiBold.ttf */; };
 		EB04E6362A55665800C62C70 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB04E6312A55665800C62C70 /* Poppins-Light.ttf */; };
+		EBB13B7F2A5BBDF500620F1D /* BDsoEffectContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B7E2A5BBDF500620F1D /* BDsoEffectContentVC.swift */; };
+		EBB13B812A5BE4DA00620F1D /* BDsoEffectPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B802A5BE4DA00620F1D /* BDsoEffectPreview.swift */; };
+		EBB13B842A5C06E400620F1D /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = EBB13B832A5C06E400620F1D /* TLPhotoPicker */; };
+		EBB13B862A5C08E000620F1D /* BDsoBeforePreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B852A5C08E000620F1D /* BDsoBeforePreVC.swift */; };
+		EBB13B882A5C1B7A00620F1D /* BDsoNetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B872A5C1B7A00620F1D /* BDsoNetManager.swift */; };
+		EBB13B8A2A5C1E5C00620F1D /* BDsoOutAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B892A5C1E5C00620F1D /* BDsoOutAPI.swift */; };
+		EBB13BB22A5D901800620F1D /* TestImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13BB12A5D901800620F1D /* TestImage.swift */; };
+		EBB13BB42A5D908300620F1D /* basestring.txt in Resources */ = {isa = PBXBuildFile; fileRef = EBB13BB32A5D908200620F1D /* basestring.txt */; };
 		EBE2B3AD2A55953500AF393E /* BDsoFeaturePreviewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBE2B3AC2A55953500AF393E /* BDsoFeaturePreviewList.swift */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +56,13 @@
 		EB04E62F2A55665700C62C70 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
 		EB04E6302A55665800C62C70 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		EB04E6312A55665800C62C70 /* Poppins-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Light.ttf"; sourceTree = "<group>"; };
+		EBB13B7E2A5BBDF500620F1D /* BDsoEffectContentVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoEffectContentVC.swift; sourceTree = "<group>"; };
+		EBB13B802A5BE4DA00620F1D /* BDsoEffectPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoEffectPreview.swift; sourceTree = "<group>"; };
+		EBB13B852A5C08E000620F1D /* BDsoBeforePreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoBeforePreVC.swift; sourceTree = "<group>"; };
+		EBB13B872A5C1B7A00620F1D /* BDsoNetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoNetManager.swift; sourceTree = "<group>"; };
+		EBB13B892A5C1E5C00620F1D /* BDsoOutAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoOutAPI.swift; sourceTree = "<group>"; };
+		EBB13BB12A5D901800620F1D /* TestImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestImage.swift; sourceTree = "<group>"; };
+		EBB13BB32A5D908200620F1D /* basestring.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = basestring.txt; sourceTree = "<group>"; };
 		EBE2B3AC2A55953500AF393E /* BDsoFeaturePreviewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoFeaturePreviewList.swift; sourceTree = "<group>"; };
 		F8F75F49191F5166E6300708 /* Pods_BDsoSharpenImage.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BDsoSharpenImage.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -58,6 +73,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC90182D4D503F933C461EE4 /* Pods_BDsoSharpenImage.framework in Frameworks */,
+				EBB13B842A5C06E400620F1D /* TLPhotoPicker in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +124,11 @@
 				EB04E5E62A5416E200C62C70 /* AppDelegate.swift */,
 				EB04E5E82A5416E200C62C70 /* SceneDelegate.swift */,
 				EB04E5EA2A5416E200C62C70 /* ViewController.swift */,
+				EBB13B7E2A5BBDF500620F1D /* BDsoEffectContentVC.swift */,
+				EBB13B852A5C08E000620F1D /* BDsoBeforePreVC.swift */,
 				EB04E62B2A555FFF00C62C70 /* BDsoToManager.swift */,
+				EBB13BB12A5D901800620F1D /* TestImage.swift */,
+				EBB13BB32A5D908200620F1D /* basestring.txt */,
 				EB04E6282A5559DE00C62C70 /* PageViews */,
 				EB04E5FE2A541AB600C62C70 /* ViewControllers */,
 				EB04E5EC2A5416E200C62C70 /* Main.storyboard */,
@@ -135,6 +155,8 @@
 		EB04E5FD2A541A3B00C62C70 /* NetManager */ = {
 			isa = PBXGroup;
 			children = (
+				EBB13B872A5C1B7A00620F1D /* BDsoNetManager.swift */,
+				EBB13B892A5C1E5C00620F1D /* BDsoOutAPI.swift */,
 			);
 			path = NetManager;
 			sourceTree = "<group>";
@@ -160,6 +182,7 @@
 			children = (
 				EB04E6292A555A0000C62C70 /* BDsoFeatureTypeCollection.swift */,
 				EBE2B3AC2A55953500AF393E /* BDsoFeaturePreviewList.swift */,
+				EBB13B802A5BE4DA00620F1D /* BDsoEffectPreview.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -182,6 +205,9 @@
 			dependencies = (
 			);
 			name = BDsoSharpenImage;
+			packageProductDependencies = (
+				EBB13B832A5C06E400620F1D /* TLPhotoPicker */,
+			);
 			productName = BDsoSharpenImage;
 			productReference = EB04E5E32A5416E200C62C70 /* BDsoSharpenImage.app */;
 			productType = "com.apple.product-type.application";
@@ -210,6 +236,9 @@
 				Base,
 			);
 			mainGroup = EB04E5DA2A5416E200C62C70;
+			packageReferences = (
+				EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
+			);
 			productRefGroup = EB04E5E42A5416E200C62C70 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -230,6 +259,7 @@
 				EB04E6362A55665800C62C70 /* Poppins-Light.ttf in Resources */,
 				EB04E6332A55665800C62C70 /* Poppins-Bold.ttf in Resources */,
 				EB04E6342A55665800C62C70 /* Poppins-Regular.ttf in Resources */,
+				EBB13BB42A5D908300620F1D /* basestring.txt in Resources */,
 				EB04E5F02A5416E500C62C70 /* Assets.xcassets in Resources */,
 				EB04E5EE2A5416E200C62C70 /* Main.storyboard in Resources */,
 			);
@@ -285,11 +315,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB04E62A2A555A0000C62C70 /* BDsoFeatureTypeCollection.swift in Sources */,
+				EBB13B7F2A5BBDF500620F1D /* BDsoEffectContentVC.swift in Sources */,
 				EBE2B3AD2A55953500AF393E /* BDsoFeaturePreviewList.swift in Sources */,
+				EBB13B862A5C08E000620F1D /* BDsoBeforePreVC.swift in Sources */,
+				EBB13BB22A5D901800620F1D /* TestImage.swift in Sources */,
+				EBB13B882A5C1B7A00620F1D /* BDsoNetManager.swift in Sources */,
 				EB04E5EB2A5416E200C62C70 /* ViewController.swift in Sources */,
 				EB04E6002A541AD000C62C70 /* BDsoShareSettingVC.swift in Sources */,
+				EBB13B8A2A5C1E5C00620F1D /* BDsoOutAPI.swift in Sources */,
 				EB04E5E72A5416E200C62C70 /* AppDelegate.swift in Sources */,
 				EB04E62C2A555FFF00C62C70 /* BDsoToManager.swift in Sources */,
+				EBB13B812A5BE4DA00620F1D /* BDsoEffectPreview.swift in Sources */,
 				EB04E5FC2A5419F700C62C70 /* ViewChainExtension.swift in Sources */,
 				EB04E5E92A5416E200C62C70 /* SceneDelegate.swift in Sources */,
 				EB04E6032A54247A00C62C70 /* BDsoSharSubscbeManager.swift in Sources */,
@@ -440,6 +476,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 97Y24FFSPP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BDsoSharpenImage/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "App needs your camera permission to record video and edit it shape, mask, cut it, add stickers, text, music and other effect.";
@@ -450,14 +487,14 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeRight;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nImagew.BDsoSharpenImage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xx.88888888;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -476,6 +513,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 97Y24FFSPP;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BDsoSharpenImage/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "App needs your camera permission to record video and edit it shape, mask, cut it, add stickers, text, music and other effect.";
@@ -486,14 +524,14 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeRight;
-				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				INFOPLIST_KEY_UIUserInterfaceStyle = Dark;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = nImagew.BDsoSharpenImage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.xx.88888888;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -526,6 +564,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tilltue/TLPhotoPicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EBB13B832A5C06E400620F1D /* TLPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
+			productName = TLPhotoPicker;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EB04E5DB2A5416E200C62C70 /* Project object */;
 }

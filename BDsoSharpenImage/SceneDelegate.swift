@@ -16,10 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let _ = (scene as? UIWindowScene) else { return }
         
-        BDsoToManager.default
+        let _ = BDsoToManager.default
         //
         let vc = ViewController()
         let rootNavigationController = UINavigationController(rootViewController: vc)
+        rootNavigationController.isNavigationBarHidden = true
         let leftViewController = BDsoShareSettingVC()
         let sideMenuController = LGSideMenuController(rootViewController: rootNavigationController, leftViewController: leftViewController)
         sideMenuController.leftViewPresentationStyle = .slideAbove

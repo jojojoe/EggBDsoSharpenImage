@@ -28,16 +28,16 @@ class SettingContentItem {
             iconStr = ""
             nameStr = ""
         case .share:
-            iconStr = "ic_setting_feedback"
+            iconStr = "set_share"
             nameStr = "Share"
         case .terms:
-            iconStr = "ic_setting_term_of_use"
+            iconStr = "set_terms"
             nameStr = "Terms of use"
         case .privacy:
-            iconStr = "ic_setting_privacy_policy"
+            iconStr = "set_privacy"
             nameStr = "Privacy policy"
         case .rateus:
-            iconStr = "ic_setting_rest_us"
+            iconStr = "set_rateus"
             nameStr = "Rate us"
         }
     }
@@ -89,8 +89,7 @@ class BDsoShareSettingVC: UIViewController {
                 $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
                 $0.width.height.equalTo(40)
             }
-            .title("B")
-            .image(UIImage(named: ""))
+            .image(UIImage(named: "settingback"))
             .target(target: self, action: #selector(bbtnClick), event: .touchUpInside)
         //
         let layout = UICollectionViewFlowLayout()

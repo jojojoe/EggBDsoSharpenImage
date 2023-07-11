@@ -11,6 +11,10 @@ import ScalingCarousel
 class BDsoFeaturePreviewList: UIView {
 
     var scalingCarousel: ScalingCarouselView!
+    var featureItemClickBlock: ((FeatureTypeItem, IndexPath)->Void)?
+    var currentInfoIndex: Int = 0
+    var isAutoScroll: Bool = false
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -25,13 +29,14 @@ class BDsoFeaturePreviewList: UIView {
     }
 
     func setupV() {
-        scalingCarousel = ScalingCarouselView(withFrame: CGRect.zero, andInset: 20)
+        self.backgroundColor(.clear)
+        scalingCarousel = ScalingCarouselView(withFrame: frame, andInset: 50)
         scalingCarousel.scrollDirection = .horizontal
         scalingCarousel.dataSource = self
         scalingCarousel.delegate = self
         scalingCarousel.translatesAutoresizingMaskIntoConstraints = false
-        scalingCarousel.backgroundColor = .white
-        scalingCarousel.contentSize = CGRect(x: 0, y: 0, width: 0, height: 0)
+        scalingCarousel.backgroundColor = .clear
+        
         scalingCarousel.register(BDsoFeaturePreviewCell.self, forCellWithReuseIdentifier: "BDsoFeaturePreviewCell")
         
         addSubview(scalingCarousel)
@@ -69,13 +74,32 @@ extension BDsoFeaturePreviewList: UICollectionViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scalingCarousel.didScroll()
+        if !isAutoScroll {
+            if scrollView == scalingCarousel {
+                if let indexP = scalingCarousel.indexPathForItem(at: CGPoint(x: self.bounds.width/2 + scalingCarousel.contentOffset.x, y: 100)) {
+                    if indexP.item != currentInfoIndex {
+                        currentInfoIndex = indexP.item
+                        let item = BDsoToManager.default.featureList[currentInfoIndex]
+                        BDsoToManager.default.currentSelectItem = item
+                        self.featureItemClickBlock?(item, indexP)
+                    }
+                }
+            }
+        }
     }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        isAutoScroll = false
+    }
+    
+    
 }
 
 
 class BDsoFeaturePreviewCell: ScalingCarouselCell {
     //
     let contentImgV = UIImageView()
+    let lineV = UIView()
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -93,6 +117,16 @@ class BDsoFeaturePreviewCell: ScalingCarouselCell {
         }
         contentImgV.contentMode(.scaleAspectFill)
             .clipsToBounds()
+        //
+        mainView.addSubview(lineV)
+        lineV.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.width.equalTo(4)
+        }
+        lineV.backgroundColor(.white)
+            .shadow(color: UIColor(hexString: "#161B37"), radius: 4, opacity: 0.15, offset: CGSize(width: 4, height: 0), path: nil)
+            .cornerRadius(2, masksToBounds: false)
         
     }
     

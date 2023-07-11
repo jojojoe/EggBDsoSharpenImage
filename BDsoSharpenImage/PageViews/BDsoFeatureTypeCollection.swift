@@ -109,7 +109,6 @@ extension BDsoFeatureTypeCollection: UICollectionViewDelegate {
 
 class BDsoFeaTypeCell: UICollectionViewCell {
     let contentImgV = UIImageView()
-    let selectV = UIView()
     let nametLabel = UILabel()
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -146,14 +145,6 @@ class BDsoFeaTypeCell: UICollectionViewCell {
         }
         contentImgV.cornerRadius(10)
         //
-        
-        selectV
-            .adhere(toSuperview: contentView) {
-                $0.edges.equalTo(contentImgV)
-            }
-            .backgroundColor(.clear)
-            .borderColor(UIColor(hexString: "#22214B")!, width: 1)
-            .cornerRadius(10)
         
         nametLabel
             .adhere(toSuperview: contentView) {
