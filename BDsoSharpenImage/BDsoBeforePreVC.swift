@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import KRProgressHUD
+import Photos
 
 enum ProcessingStep {
     case before
@@ -18,6 +20,8 @@ enum ProcessingStep {
 class BDsoBeforePreVC: UIViewController {
     
     var originImg: UIImage
+    let contentBgV = UIView()
+    let canvasV = UIView()
     let contentImgV = UIImageView()
     let shareBtn = UIButton()
     let downloadSaveBtn = UIButton()
@@ -26,12 +30,47 @@ class BDsoBeforePreVC: UIViewController {
     let processedChecknowBtn = UIButton()
     let processingLoadingImgV = UIImageView()
     let overlayerBgView = UIView()
-    
+    var loadingTimer: Timer?
     var currentProcessingStep: ProcessingStep = .before
+    var processImg: UIImage?
+    var isProcessing: Bool = false
+    var loadingPenddingTime: Int = 0
+    private let radarAnimation = "radarAnimation"
+    var layoutSubsViewOnce = Once()
+    var isCurrentSaveClick = true
+    //
+    private var quad: Quadrilateral
+    private var quadViewWidthConstraint = NSLayoutConstraint()
+    private var quadViewHeightConstraint = NSLayoutConstraint()
+    private lazy var quadView: QuadrilateralView = {
+        let quadView = QuadrilateralView()
+        quadView.editable = true
+        quadView.strokeColor = UIColor(hexString: "#FFFFFF")!.cgColor
+        quadView.translatesAutoresizingMaskIntoConstraints = false
+        return quadView
+    }()
+    private var zoomGestureController: ZoomGestureController!
+    
+    //
+    
+    static func defaultQuad(forImage image: UIImage) -> Quadrilateral {
+        let topLeft = CGPoint(x: image.size.width * 0.3, y: image.size.height * 0.3)
+        let topRight = CGPoint(x: image.size.width * 0.7, y: image.size.height * 0.3)
+        let bottomLeft = CGPoint(x: image.size.width * 0.3, y: image.size.height * 0.7)
+        let bottomRight = CGPoint(x: image.size.width * 0.7, y: image.size.height * 0.7)
+
+        let quad = Quadrilateral(topLeft: topLeft, topRight: topRight, bottomRight: bottomRight, bottomLeft: bottomLeft)
+
+        return quad
+    }
+    
+    
     
     init(originImg: UIImage) {
         self.originImg = originImg
+        self.quad = BDsoBeforePreVC.defaultQuad(forImage: originImg)
         super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -45,9 +84,100 @@ class BDsoBeforePreVC: UIViewController {
         setupProccessingOverlayerView()
         updateDownloadStatus(processingStep: .before)
         
+        
+        
+        
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if contentBgV.bounds.size.width == UIScreen.main.bounds.size.width {
+            layoutSubsViewOnce.run {
+                self.stupCanvasV()
+                if BDsoToManager.default.currentSelectItem.ftype == .repair {
+                    self.setupQuadView()
+                    self.adjustQuadViewConstraints()
+                    self.displayQuad()
+                } else {
+                    
+                }
+                
+                
+                
+            }
+        }
+    }
+    
+    func stupCanvasV() {
+        //
+        let offsetX: CGFloat = 30
+        let offsetY: CGFloat = 40
+        var canvasVW: CGFloat = contentBgV.bounds.size.width - offsetX * 2
+        var canvasVH: CGFloat = contentBgV.bounds.size.height - offsetY * 2
+        let targetSizeW: CGFloat = originImg.size.width
+        let targetSizeH: CGFloat = originImg.size.height
+        
+        if targetSizeW / targetSizeH > canvasVW / canvasVH {
+            canvasVH = canvasVW * (targetSizeH/targetSizeW)
+        } else {
+            canvasVW = canvasVH * (targetSizeW/targetSizeH)
+        }
+        
+        //
+        contentBgV.addSubview(canvasV)
+        canvasV.frame = CGRect(origin: CGPoint(x: (contentBgV.bounds.size.width - canvasVW)/2, y: (contentBgV.bounds.size.height - canvasVH)/2), size: CGSize(width: canvasVW, height: canvasVH))
+        
+        //
+        contentImgV
+            .adhere(toSuperview: canvasV) {
+                $0.edges.equalToSuperview()
+            }
+            .contentMode(.scaleAspectFit)
+        contentImgV.image = originImg
+        
+        
+        
+    }
+    
+    
+    private func setupConstraints() {
+        quadViewWidthConstraint = quadView.widthAnchor.constraint(equalToConstant: 0.0)
+        quadViewHeightConstraint = quadView.heightAnchor.constraint(equalToConstant: 0.0)
+        let quadViewConstraints = [
+            quadView.centerXAnchor.constraint(equalTo: canvasV.centerXAnchor),
+            quadView.centerYAnchor.constraint(equalTo: canvasV.centerYAnchor),
+            quadViewWidthConstraint,
+            quadViewHeightConstraint
+        ]
+        NSLayoutConstraint.activate(quadViewConstraints)
+    }
+    
+    
+    
+    
+    
 
+    func setupQuadView() {
+        //
+        canvasV.addSubview(quadView)
+        setupConstraints()
+        
+        //
+        zoomGestureController = ZoomGestureController(image: originImg, quadView: quadView)
+        let touchDown = UILongPressGestureRecognizer(target: zoomGestureController, action: #selector(zoomGestureController.handle(pan:)))
+        touchDown.minimumPressDuration = 0
+        contentBgV.addGestureRecognizer(touchDown)
+        zoomGestureController.touchMoveBlock = {
+            [weak self] in
+            guard let `self` = self else {return}
+            DispatchQueue.main.async {
+                if let qua = self.quadView.quad {
+                    self.quad = qua
+                }
+            }
+        }
+    }
+    
     func setupV() {
         view.backgroundColor(UIColor(hexString: "#1E1E1E")!)
             .clipsToBounds()
@@ -65,7 +195,7 @@ class BDsoBeforePreVC: UIViewController {
         
         shareBtn
             .adhere(toSuperview: view) {
-                $0.left.equalToSuperview().offset(20)
+                $0.right.equalToSuperview().offset(-20)
                 $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(5)
                 $0.width.equalTo(48)
                 $0.height.equalTo(48)
@@ -73,7 +203,7 @@ class BDsoBeforePreVC: UIViewController {
             .image(UIImage(named: "icon_share_b"))
             .target(target: self, action: #selector(shareBtnClick), event: .touchUpInside)
         //
-        let contentBgV = UIView()
+        
         contentBgV.adhere(toSuperview: view) {
             $0.left.right.equalToSuperview()
             $0.top.equalTo(backBtn.snp.bottom).offset(30)
@@ -81,12 +211,6 @@ class BDsoBeforePreVC: UIViewController {
         }
         //
         
-        contentImgV
-            .adhere(toSuperview: contentBgV) {
-                $0.edges.equalToSuperview()
-            }
-            .contentMode(.scaleAspectFit)
-        contentImgV.image = originImg
         //
         let startBtn = UIButton()
             .adhere(toSuperview: view) {
@@ -191,7 +315,7 @@ class BDsoBeforePreVC: UIViewController {
                 $0.width.height.equalTo(160)
             }
             .image("fe_processingloading")
-//
+        
         
     }
     
@@ -242,14 +366,20 @@ class BDsoBeforePreVC: UIViewController {
     }
     
     @objc func shareBtnClick() {
+        self.isCurrentSaveClick = false
+        saveImgsToAlbumOrShare()
+        
         
     }
     
     @objc func startBtnClick() {
-        
+        isProcessing = true
+        updateDownloadStatus(processingStep: .processStep1)
+        makeRadarAnimation(animalView: processingLoadingImgV)
         if let token = BDsoNetManager.default.getTokenInfo() {
             BDsoNetManager.default.accessTokey = token
             processRequestImg()
+            debugPrint("token = \(token)")
         } else {
             BDsoNetManager.default.apiRequest(target: .requestToken) {[weak self] jsonObject, error in
                 guard let `self` = self else {return}
@@ -277,7 +407,6 @@ class BDsoBeforePreVC: UIViewController {
         } else {
             self.showAlert(title: "Sorry", message: "Some errors have occurred, please replace the picture and try again")
         }
-        
     }
     
     func dicToJsonString(dicArr: [[String: Any]]) -> String? {
@@ -294,70 +423,285 @@ class BDsoBeforePreVC: UIViewController {
         case .enhancer:
             outapi = .enhancer(imgBase64: imgBase64)
         case .repair:
-            let w: CGFloat = originImg.size.width * (1.0/2.0)
-            let h: CGFloat = originImg.size.height * (1.0/2.0)
-            let offx: CGFloat = originImg.size.width * (1.0/4.0)
-            let offy: CGFloat = originImg.size.height * (1.0/4.0)
             
-            let arr: [[String: Any]] = [["width" : w, "top" : offy, "height" : h, "left" : offx]]
-            if let arrjsonstr = self.dicToJsonString(dicArr: arr) {
-                outapi = .repair(imgBase64: imgBase64, rectangle: arrjsonstr)
-            } else {
-                self.showAlert(title: "Sorry", message: "Some errors have occurred, please replace the picture and try again")
-            }
+            let scaledQuad = self.quad.scale(self.quadView.bounds.size, self.originImg.size)
             
+            let w: Int = Int((scaledQuad.bottomRight.x) - (scaledQuad.topLeft.x))
+            let h: Int = Int((scaledQuad.bottomRight.y) - (scaledQuad.topLeft.y))
+            let offx: Int = Int(scaledQuad.topLeft.x)
+            let offy: Int = Int(scaledQuad.topLeft.y)
+            
+            let arr: [[String: Int]] = [["width" : w, "top" : offy, "height" : h, "left" : offx]]
+            debugPrint("remove area = \(arr)")
+            outapi = .repair(imgBase64: imgBase64, rectangle: arr)
+//            if let arrjsonstr = self.dicToJsonString(dicArr: arr) {
+//
+//            } else {
+//                self.showAlert(title: "Sorry", message: "Some errors have occurred, please replace the picture and try again")
+//            }
         case .restoration:
             outapi = .restoration(imgBase64: imgBase64)
         case .denoise:
-            outapi = .denoise(imgBase64: imgBase64, option: 100)
+            outapi = .denoise(imgBase64: imgBase64, option: 50)
         case .enlarge:
             outapi = .enlarge(imgBase64: imgBase64)
         }
         
+        let timer = Timer.after(2) {
+            [weak self] in
+            guard let `self` = self else {return}
+            if self.isProcessing {
+                DispatchQueue.main.async {
+                    self.updateDownloadStatus(processingStep: .processStep2)
+                    Timer.after(2) {
+                        [weak self] in
+                        guard let `self` = self else {return}
+                        if self.isProcessing {
+                            DispatchQueue.main.async {
+                                self.loadingPenddingTime = 0
+                                self.loadingTimer = Timer.every(1) {
+                                    [weak self] in
+                                    guard let `self` = self else {return}
+                                    DispatchQueue.main.async {
+                                        if self.isProcessing {
+                                            self.checkResultStatus()
+                                            self.loadingPenddingTime += 1
+                                            if self.loadingPenddingTime == 12 {
+                                                self.requestTimeoutAlert()
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         
+        /*
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             [weak self] in
             guard let `self` = self else {return}
             DispatchQueue.main.async {
                 if let img = BDsoToManager.default.processImgFrom(base64: processBase64) {
                     debugPrint(img)
-                    self.contentImgV.image = img
-                }
-            }
-
-        }
-        
-        
-        
-        /*
-        BDsoNetManager.default.apiRequest(target: outapi) {[weak self] jsonObject, error in
-            guard let `self` = self else {return}
-            DispatchQueue.main.async {
-                if let jsonObject_m = jsonObject {
-                    let processedImgBase64 = jsonObject_m["image"].stringValue
-                    debugPrint("processedImgBase64 - \(processedImgBase64)")
-                    if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
-                        debugPrint(img)
-                        self.contentImgV.image = img
-                    }
+                    self.processImg = img
+                    
                 }
             }
         }
         */
         
+        
+//        /*
+        BDsoNetManager.default.apiRequest(target: outapi) { jsonObject, responseCode in
+            DispatchQueue.main.async {
+                if let jsonObject_m = jsonObject {
+                    var imgKey: String = "image"
+                    switch outapi {
+                    case .denoise(_, _):
+                        imgKey = "result"
+                    default:
+                        break
+                    }
+                    let processedImgBase64 = jsonObject_m[imgKey].stringValue
+                    if processedImgBase64.count >= 1 {
+                        debugPrint("processedImgBase64 - \(processedImgBase64)")
+                        if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
+                            debugPrint(img)
+                            self.processImg = img
+                        } else {
+                            debugPrint("processedImgBase64 - 未解析图片")
+                            self.requestTimeoutAlert()
+                        }
+                    } else {
+                        debugPrint("processedImgBase64 - 未解析出来")
+                        self.requestTimeoutAlert()
+                    }
+
+                } else {
+                    self.requestTimeoutAlert()
+                }
+            }
+        } failure: {[weak self] outerror in
+            guard let `self` = self else {return}
+            if let er = outerror {
+                DispatchQueue.main.async {
+                    self.requestTimeoutAlert()
+                }
+            }
+        }
+
+//        */
+        
     }
     
     @objc func saveBtnClick() {
-        
+        self.isCurrentSaveClick = true
+        saveImgsToAlbumOrShare()
     }
 
     @objc func processedCancelBtnClick() {
-        
+        isProcessing = false
+        self.updateDownloadStatus(processingStep: .before)
+        if self.processImg == nil {
+            BDsoNetManager.cancelAllNetworkRequest()
+        }
+        KRProgressHUD.showInfo(withMessage: "You have canceled this operation")
     }
     
     @objc func processedChecknowBtnClick() {
+        if let img = self.processImg {
+            self.updateProcessedImg(processedImg: img)
+        }
+        isProcessing = false
+        self.updateDownloadStatus(processingStep: .downloadSave)
         
+        if BDsoToManager.default.currentSelectItem.ftype == .repair {
+            self.quadView.isHidden = true
+        }
     }
     
+}
+
+extension BDsoBeforePreVC {
+    func checkResultStatus() {
+        if processImg != nil {
+            if let timer = loadingTimer {
+                timer.invalidate()
+                loadingTimer = nil
+            }
+            processingLoadingImgV.layer.removeAnimation(forKey: radarAnimation)
+            self.updateDownloadStatus(processingStep: .processStepFinish)
+        }
+    }
+    
+    private func makeRadarAnimation(animalView: UIView) {
+        let animation = CABasicAnimation(keyPath: "transform.rotation.z")
+        animation.fromValue = 0.0
+        animation.toValue = CGFloat.pi * 2
+        animation.duration  = 2
+        animation.autoreverses = false
+        animation.fillMode = .forwards
+        animation.repeatCount = HUGE
+        animalView.layer.add(animation, forKey: radarAnimation)
+         
+    }
+    
+    func requestTimeoutAlert() {
+        isProcessing = false
+        processingLoadingImgV.layer.removeAnimation(forKey: radarAnimation)
+        self.updateDownloadStatus(processingStep: .before)
+        if let timer = loadingTimer {
+            timer.invalidate()
+            loadingTimer = nil
+        }
+        BDsoNetManager.cancelAllNetworkRequest()
+        KRProgressHUD.showInfo(withMessage: "Some problems occur, please check the network or restart and try again")
+    }
+    
+    func saveImgsToAlbumOrShare() {
+        let finishedImg = processImg ?? self.contentImgV.image ?? originImg
+        let imgs = [finishedImg]
+        let status = PHPhotoLibrary.authorizationStatus()
+        if status == .authorized {
+            if self.isCurrentSaveClick {
+                saveToAlbumPhotoAction(images: imgs)
+            } else {
+                shareAction(images: imgs)
+            }
+            
+        } else if status == .notDetermined {
+            PHPhotoLibrary.requestAuthorization(for: .readWrite) {[weak self] status in
+                guard let `self` = self else {return}
+                DispatchQueue.main.async {
+                    if status != .authorized || status != .limited {
+                        return
+                    }
+                    if self.isCurrentSaveClick {
+                        self.saveToAlbumPhotoAction(images: imgs)
+                    } else {
+                        self.shareAction(images: imgs)
+                    }
+                    
+                }
+            }
+        } else {
+            // 权限提示
+            showPhotoDeniedAlertV()
+        }
+    }
+    
+    
+    func shareAction(images: [UIImage]) {
+        let imgs = [processImg]
+        let vc = UIActivityViewController(activityItems: images, applicationActivities: nil)
+        vc.popoverPresentationController?.sourceView = self.view
+        self.present(vc, animated: true)
+    }
+    
+    
+    func saveToAlbumPhotoAction(images: [UIImage]) {
+        DispatchQueue.main.async(execute: {
+            PHPhotoLibrary.shared().performChanges({
+                [weak self] in
+                guard let `self` = self else {return}
+                for img in images {
+                    PHAssetChangeRequest.creationRequestForAsset(from: img)
+                }
+                DispatchQueue.main.async {
+                    [weak self] in
+                    guard let `self` = self else {return}
+                    KRProgressHUD.showSuccess(withMessage: "The photo has been successfully saved to the album!")
+                }
+                
+            }) { (finish, error) in
+                if error != nil {
+                    KRProgressHUD.showInfo(withMessage: "Sorry! please try again!")
+                }
+            }
+        })
+    }
+    
+    func showPhotoDeniedAlertV() {
+        let alert = UIAlertController(title: "", message: "You have declined access to photos, please active it in Settings>Privacy>Photos.", preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { (goSettingAction) in
+            DispatchQueue.main.async {
+                let url = URL(string: UIApplication.openSettingsURLString)!
+                UIApplication.shared.open(url, options: [:])
+            }
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        
+        self.present(alert, animated: true)
+    }
+    
+    
+}
+
+extension BDsoBeforePreVC {
+    private func displayQuad() {
+        let imageSize = originImg.size
+        let imageFrame = CGRect(
+            origin: quadView.frame.origin,
+            size: CGSize(width: quadViewWidthConstraint.constant, height: quadViewHeightConstraint.constant)
+        )
+
+        let scaleTransform = CGAffineTransform.scaleTransform(forSize: imageSize, aspectFillInSize: imageFrame.size)
+        let transforms = [scaleTransform]
+        let transformedQuad = self.quad.applyTransforms(transforms)
+
+        quadView.drawQuadrilateral(quad: transformedQuad, animated: false)
+    }
+    
+    private func adjustQuadViewConstraints() {
+        let imgViewBound: CGRect = CGRect(x: 0, y: 0, width: canvasV.bounds.size.width, height: canvasV.bounds.size.height)
+        let frame = AVMakeRect(aspectRatio: originImg.size, insideRect: imgViewBound)
+        quadViewWidthConstraint.constant = frame.size.width
+        quadViewHeightConstraint.constant = frame.size.height
+    }
     
 }

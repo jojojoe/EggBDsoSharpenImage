@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import MessageUI
+import Photos
+import DeviceKit
+import KRProgressHUD
 
 enum FeatureType {
     case sharpen
@@ -73,6 +77,15 @@ class FeatureTypeItem: NSObject {
             descriName = "Enlarge the image by doubling L&W"
         }
     }
+}
+
+struct ApInfoConfig {
+    //Picture Scan
+    static let privacyUrl = "https://sites.google.com/view/sharpenimage-privacy-policy/home"
+    static let termsUrl = "https://sites.google.com/view/sharpenimage-terms-of-use/home"
+    static let feedbackEmail = "EburhardtHomburg001@outlook.com"
+    static let appName = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? ""
+    static let shareStr = "Share with friends:\("itms-apps://itunes.apple.com/cn/app/id\("6451093147")?mt=8")"
 }
 
 class BDsoToManager: NSObject {
@@ -161,3 +174,50 @@ class BDsoToManager: NSObject {
 }
 
 
+extension BDsoToManager: MFMailComposeViewControllerDelegate {
+    func userShareAction(viewCon: UIViewController) {
+        let activityItems = [ApInfoConfig.shareStr] as [Any]
+        let vc = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        viewCon.present(vc, animated: true)
+    }
+    
+    func userPrivacyAction() {
+        if let path = URL(string: ApInfoConfig.privacyUrl) {
+            if UIApplication.shared.canOpenURL(path) {
+                UIApplication.shared.open(path, options: [:]) { success in
+                }
+            }
+        }
+    }
+    
+    func userTermsAction() {
+        if let path = URL(string: ApInfoConfig.termsUrl) {
+            if UIApplication.shared.canOpenURL(path) {
+                UIApplication.shared.open(path, options: [:]) { success in
+                }
+            }
+        }
+    }
+    
+    func userFeedbackEmail(viewCon: UIViewController) {
+        if MFMailComposeViewController.canSendMail() {
+            let version = UIDevice.current.systemVersion
+            
+            let modelName = Device.current.description
+            let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] ?? "0.0.0"
+            let appName = "\(ApInfoConfig.appName)"
+            let vc = MFMailComposeViewController()
+            vc.mailComposeDelegate = self
+            vc.setSubject("\(appName) Feedback")
+            vc.setToRecipients([ApInfoConfig.feedbackEmail])
+            vc.setMessageBody("\n\n\nSystem Version：\(version)\n Device Name：\(modelName)\n App Name：\(appName)\n App Version：\(appVersion)", isHTML: false)
+            viewCon.present(vc, animated: true, completion: nil)
+        } else {
+            KRProgressHUD.showError(withMessage: "The device doesn't support email")
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
+    }
+}

@@ -10,6 +10,8 @@ import Moya
 import Alamofire
 import MoyaSugar
 import SwiftyJSON
+import SwiftyTimer
+
 
 class BDsoNetManager: NSObject {
     static let `default` = BDsoNetManager()
@@ -95,11 +97,12 @@ extension BDsoNetManager {
                             success?(jsondata, response.statusCode)
                         } catch let error {
                             debugPrint("error- \(error)")
-                            failure?(.parseJsonFailure)
-                            
+                            failure?(.networkFailure)
+
                         }
                     default:
-                        success?(nil, response.statusCode)
+//                        success?(nil, response.statusCode)
+                        failure?(.networkFailure)
                     }
                 case let .failure(error):
                     debugPrint("errorstr error = \(error)")

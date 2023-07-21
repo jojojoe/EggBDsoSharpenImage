@@ -92,6 +92,7 @@ class ViewController: UIViewController {
         settingBtn.titleLabel?.adjustsFontSizeToFitWidth = true
         
         //
+        /*
         let upoproBtn = UIButton()
             .adhere(toSuperview: view) {
                 $0.right.equalToSuperview().offset(-20)
@@ -101,6 +102,7 @@ class ViewController: UIViewController {
             }
             .image(UIImage(named: "homeproicon"))
             .target(target: self, action: #selector(upoproBtnClick), event: .touchUpInside)
+        */
         //
         let cellw: CGFloat = CGFloat(Int((UIScreen.width() - (BDsoToManager.default.cpadding * CGFloat((BDsoToManager.default.featureList.count + 1)))) / CGFloat(BDsoToManager.default.featureList.count)))
         let cellh: CGFloat = cellw + 16
@@ -187,8 +189,18 @@ class ViewController: UIViewController {
     }
     
     func selectScrollPreviewListStatus(currentIdx: IndexPath) {
-        previewListCollection.isAutoScroll = true
-        previewListCollection.scalingCarousel.scrollToItem(at: currentIdx, at: .centeredHorizontally, animated: true)
+        if self.previewListCollection.isAutoScroll == false {
+            previewListCollection.isAutoScroll = true
+            previewListCollection.scalingCarousel.scrollToItem(at: currentIdx, at: .centeredHorizontally, animated: true)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5) {
+                [weak self] in
+                guard let `self` = self else {return}
+                DispatchQueue.main.async {
+                    self.previewListCollection.isAutoScroll = false
+                }
+            }
+        }
+        
          
     }
     
@@ -203,15 +215,10 @@ class ViewController: UIViewController {
     
     @objc func settingBtnClick() {
         
-        
-        
-        
-        return
-        
-//        self.sideMenuController?.showLeftView()
-//        if let setvc = self.sideMenuController?.leftViewController as? BDsoShareSettingVC {
-//            setvc.viewWillAppear(true)
-//        }
+        self.sideMenuController?.showLeftView()
+        if let setvc = self.sideMenuController?.leftViewController as? BDsoShareSettingVC {
+            setvc.viewWillAppear(true)
+        }
     }
     
     @objc func upoproBtnClick() {

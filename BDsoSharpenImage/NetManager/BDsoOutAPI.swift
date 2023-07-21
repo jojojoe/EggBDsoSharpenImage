@@ -31,7 +31,7 @@ enum OutAPI {
     case requestToken
     case sharpen(imgBase64: String)
     case denoise(imgBase64: String, option: Int) // 在[0，200]区间内
-    case repair(imgBase64: String, rectangle: String) // [{'width': 92, 'top': 25, 'height': 36, 'left': 543}]
+    case repair(imgBase64: String, rectangle: [[String: Int]]) // [{'width': 92, 'top': 25, 'height': 36, 'left': 543}]
     case restoration(imgBase64: String)
     case enhancer(imgBase64: String)
     case enlarge(imgBase64: String)
@@ -95,7 +95,7 @@ extension OutAPI: SugarTargetType {
             let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]
             let params = ["image": imgBase64, "rectangle": rectangle] as [String : Any]
             return .requestCompositeParameters(bodyParameters: params,
-                                               bodyEncoding: URLEncoding.httpBody,
+                                               bodyEncoding: JSONEncoding.default,
                                                urlParameters: urlParameters)
         case .restoration(let imgBase64):
             let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]

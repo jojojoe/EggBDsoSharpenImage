@@ -72,6 +72,11 @@ extension BDsoFeaturePreviewList: UICollectionViewDataSource {
 
 extension BDsoFeaturePreviewList: UICollectionViewDelegate {
     
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        isAutoScroll = false
+    }
+    
+   
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scalingCarousel.didScroll()
         if !isAutoScroll {

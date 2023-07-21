@@ -26,7 +26,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         sideMenuController.leftViewPresentationStyle = .slideAbove
         sideMenuController.leftViewWidth = 310.0
         sideMenuController.isLeftViewSwipeGestureDisabled = true
-        
+        sideMenuController.isLeftViewStatusBarHidden = true
+        sideMenuController.leftViewBackgroundEffectView?.isHidden = true
         self.window!.rootViewController = sideMenuController
         self.window!.makeKeyAndVisible()
     }

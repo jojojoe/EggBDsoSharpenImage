@@ -48,7 +48,7 @@ class BDsoShareSettingVC: UIViewController {
 
     var collection: UICollectionView!
     var basicSettingList: [SettingContentItem] = []
-    let goldpro = SettingContentItem(settype: .progum)
+//    let goldpro = SettingContentItem(settype: .progum)
     let share = SettingContentItem(settype: .share)
     let terms = SettingContentItem(settype: .terms)
     let privacy = SettingContentItem(settype: .privacy)
@@ -56,7 +56,8 @@ class BDsoShareSettingVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        basicSettingList = [goldpro, share, rateus, privacy, terms]
+//        basicSettingList = [goldpro, share, rateus, privacy, terms]
+        basicSettingList = [share, rateus, privacy, terms]
         setupContent()
     }
     
@@ -141,7 +142,6 @@ extension BDsoShareSettingVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let item = basicSettingList[indexPath.item]
         if item.settype == .progum {
-            collectionView.bounds.size.width
             return CGSize(width: collectionView.bounds.size.width, height: 90)
         } else {
             return CGSize(width: collectionView.bounds.size.width, height: 64)
@@ -151,7 +151,7 @@ extension BDsoShareSettingVC: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -170,13 +170,13 @@ extension BDsoShareSettingVC: UICollectionViewDelegate {
         if item.settype == .progum {
             
         } else if item.settype == .share {
-            
+            BDsoToManager.default.userShareAction(viewCon: self)
         } else if item.settype == .rateus {
-            
+            BDsoToManager.default.userFeedbackEmail(viewCon: self)
         } else if item.settype == .privacy {
-            
+            BDsoToManager.default.userPrivacyAction()
         } else if item.settype == .terms {
-            
+            BDsoToManager.default.userTermsAction()
         }
     }
     
@@ -226,13 +226,15 @@ class BDsoSettingCell: UICollectionViewCell {
                 $0.left.equalTo(iconImgV.snp.right).offset(12)
                 $0.width.height.greaterThanOrEqualTo(20)
             }
+            .font(UIFont.FontName_PoppinsBold, 14)
+            .color(UIColor(hexString: "22214B")!)
         let arrowImgV = UIImageView()
             .adhere(toSuperview: contentView) {
                 $0.centerY.equalToSuperview()
                 $0.right.equalToSuperview().offset(-24)
                 $0.width.height.equalTo(16)
             }
-            .image("")
+            .image("set_arrowleft")
         
         //
         

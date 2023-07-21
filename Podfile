@@ -28,4 +28,7 @@ target 'BDsoSharpenImage' do
   pod 'LGSideMenuController'
   pod 'ScalingCarousel'
   pod 'EllipsePageControl'
+  pod 'SwiftyTimer'
+  
+  
 end

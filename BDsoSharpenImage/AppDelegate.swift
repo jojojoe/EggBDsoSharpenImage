@@ -7,6 +7,16 @@
 
 import UIKit
 
+/*
+ 产品名    Sharpen Image
+ 包名    com.sharpen.image
+ App ID    6451093147
+ Contact邮箱    EburhardtHomburg001@outlook.com
+     
+ Terms of Use    https://sites.google.com/view/sharpenimage-terms-of-use/home
+ Privacy Policy    https://sites.google.com/view/sharpenimage-privacy-policy/home
+ */
+
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
