@@ -405,11 +405,11 @@ class BDsoBeforePreVC: UIViewController {
         self.navigationController?.pushViewController(vc, animated: true)
 //        vc.modalPresentationStyle = .fullScreen
 //        self.present(vc, animated: true)
-        vc.purchaseSuccessBlock = { [weak self] in
-            guard let `self` = self else {return}
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
+//        vc.purchaseSuccessBlock = { [weak self] in
+//            guard let `self` = self else {return}
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
 //                self.processCheckAction()
-            }
+//            }
         }
 //        vc.pageDisappearBlock = {
 //            [weak self] in
