@@ -408,9 +408,9 @@ class BDsoBeforePreVC: UIViewController {
 //        vc.purchaseSuccessBlock = { [weak self] in
 //            guard let `self` = self else {return}
 //            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
-//                self.processCheckAction()
+////                self.processCheckAction()
 //            }
-        }
+//        }
 //        vc.pageDisappearBlock = {
 //            [weak self] in
 //            guard let `self` = self else {return}
