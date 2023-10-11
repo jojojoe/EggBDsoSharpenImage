@@ -30,13 +30,16 @@ public enum VerifyReceiptResult {
 
 class BDsoSharSubscbeManager: NSObject {
     static let `default` = BDsoSharSubscbeManager()
-    let weekIap = ""
-    let monthIap = ""
-    let yearIap = ""
+    let weekIap = "com.sharpen.image.week"
+    let monthIap = "com.sharpen.image.month"
+    let yearIap = "com.sharpen.image.year"
     
-    let defuWeekPrice = ""
-    let defuMonthPrice = ""
-    let defuYearPrice = ""
+    var currentSelectIapStr = "com.sharpen.image.month"
+    
+    let defuWeekPrice = "2.99"
+    let defuMonthPrice = "9.99"
+    let defuYearPrice = "29.99"
+    
     
     var subscribeIaps: [String] = []
     
@@ -46,13 +49,19 @@ class BDsoSharSubscbeManager: NSObject {
     
     var inSubscription: Bool = false
  
+    let feedvImpact = UIImpactFeedbackGenerator.init(style: .medium)
     
-    func loadContentData() {
+    func giveTapVib() {
+        feedvImpact.impactOccurred(intensity: 1)
+    }
+    
+    
+    func loadContentData(completion: @escaping (()->Void)) {
         subscribeIaps = [weekIap, monthIap, yearIap]
         fetchPrice(iapList: subscribeIaps) {
             [weak self] productlist in
             guard let `self` = self else {return}
-
+            completion()
         }
     }
     
@@ -80,6 +89,25 @@ class BDsoSharSubscbeManager: NSObject {
         }
         
     }
+    
+    func completeTransactions() {
+        SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+            for purchase in purchases {
+                switch purchase.transaction.transactionState {
+                case .purchased, .restored:
+                    if purchase.needsFinishTransaction {
+                        SwiftyStoreKit.finishTransaction(purchase.transaction)
+                    }
+                    break
+                case .failed, .purchasing, .deferred:
+                    break
+                @unknown default:
+                    break
+                }
+            }
+        }
+    }
+    
     
     func fetchPrice(iapList: [String], completion: @escaping (([String: [String: String]]?) -> Void)) {
         guard let cache = UserDefaults.standard.object(forKey: k_priceCache) as? [String: [String: String]] else {

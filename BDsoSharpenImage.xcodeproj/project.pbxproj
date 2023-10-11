@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		BC90182D4D503F933C461EE4 /* Pods_BDsoSharpenImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8F75F49191F5166E6300708 /* Pods_BDsoSharpenImage.framework */; };
+		D8A0F7122A6A2AB700E2E009 /* BDsoSubscribeStoreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0F7112A6A2AB700E2E009 /* BDsoSubscribeStoreVC.swift */; };
+		D8A0F7142A6A2ACA00E2E009 /* BDsoOpenGuideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0F7132A6A2ACA00E2E009 /* BDsoOpenGuideVC.swift */; };
+		D8A0F7572A8D011700E2E009 /* BDsoSplashPageOne.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0F7562A8D011700E2E009 /* BDsoSplashPageOne.swift */; };
+		D8A0F7592A8D013000E2E009 /* BDsoSplashPageTwo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8A0F7582A8D013000E2E009 /* BDsoSplashPageTwo.swift */; };
+		D8D8CFC92AA6E199008D5EBF /* TenjinSDK in Frameworks */ = {isa = PBXBuildFile; productRef = D8D8CFC82AA6E199008D5EBF /* TenjinSDK */; };
+		D8D8CFCD2AA6E313008D5EBF /* TAedView.m in Sources */ = {isa = PBXBuildFile; fileRef = D8D8CFCC2AA6E313008D5EBF /* TAedView.m */; };
 		D8EEACF02A60FF2A0096A62E /* Quadrilateral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EEACEE2A60FF2A0096A62E /* Quadrilateral.swift */; };
 		D8EEACF12A60FF2A0096A62E /* QuadrilateralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EEACEF2A60FF2A0096A62E /* QuadrilateralView.swift */; };
 		D8EEACF32A6100E00096A62E /* ZoomGestureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8EEACF22A6100E00096A62E /* ZoomGestureController.swift */; };
@@ -35,7 +41,6 @@
 		EB04E6362A55665800C62C70 /* Poppins-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EB04E6312A55665800C62C70 /* Poppins-Light.ttf */; };
 		EBB13B7F2A5BBDF500620F1D /* BDsoEffectContentVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B7E2A5BBDF500620F1D /* BDsoEffectContentVC.swift */; };
 		EBB13B812A5BE4DA00620F1D /* BDsoEffectPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B802A5BE4DA00620F1D /* BDsoEffectPreview.swift */; };
-		EBB13B842A5C06E400620F1D /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = EBB13B832A5C06E400620F1D /* TLPhotoPicker */; };
 		EBB13B862A5C08E000620F1D /* BDsoBeforePreVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B852A5C08E000620F1D /* BDsoBeforePreVC.swift */; };
 		EBB13B882A5C1B7A00620F1D /* BDsoNetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B872A5C1B7A00620F1D /* BDsoNetManager.swift */; };
 		EBB13B8A2A5C1E5C00620F1D /* BDsoOutAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBB13B892A5C1E5C00620F1D /* BDsoOutAPI.swift */; };
@@ -47,6 +52,14 @@
 /* Begin PBXFileReference section */
 		8388DC27F905DCDC21FB8883 /* Pods-BDsoSharpenImage.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BDsoSharpenImage.release.xcconfig"; path = "Target Support Files/Pods-BDsoSharpenImage/Pods-BDsoSharpenImage.release.xcconfig"; sourceTree = "<group>"; };
 		99D79E2178C339026C0B7EDA /* Pods-BDsoSharpenImage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BDsoSharpenImage.debug.xcconfig"; path = "Target Support Files/Pods-BDsoSharpenImage/Pods-BDsoSharpenImage.debug.xcconfig"; sourceTree = "<group>"; };
+		D8A0F7112A6A2AB700E2E009 /* BDsoSubscribeStoreVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoSubscribeStoreVC.swift; sourceTree = "<group>"; };
+		D8A0F7132A6A2ACA00E2E009 /* BDsoOpenGuideVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoOpenGuideVC.swift; sourceTree = "<group>"; };
+		D8A0F7562A8D011700E2E009 /* BDsoSplashPageOne.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoSplashPageOne.swift; sourceTree = "<group>"; };
+		D8A0F7582A8D013000E2E009 /* BDsoSplashPageTwo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BDsoSplashPageTwo.swift; sourceTree = "<group>"; };
+		D8A0F75A2A8DE4D800E2E009 /* configstore.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = configstore.storekit; sourceTree = "<group>"; };
+		D8D8CFCA2AA6E313008D5EBF /* BDsoSharpenImage-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BDsoSharpenImage-Bridging-Header.h"; sourceTree = "<group>"; };
+		D8D8CFCB2AA6E313008D5EBF /* TAedView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TAedView.h; sourceTree = "<group>"; };
+		D8D8CFCC2AA6E313008D5EBF /* TAedView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TAedView.m; sourceTree = "<group>"; };
 		D8EEACEE2A60FF2A0096A62E /* Quadrilateral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quadrilateral.swift; sourceTree = "<group>"; };
 		D8EEACEF2A60FF2A0096A62E /* QuadrilateralView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuadrilateralView.swift; sourceTree = "<group>"; };
 		D8EEACF22A6100E00096A62E /* ZoomGestureController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomGestureController.swift; sourceTree = "<group>"; };
@@ -91,7 +104,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BC90182D4D503F933C461EE4 /* Pods_BDsoSharpenImage.framework in Frameworks */,
-				EBB13B842A5C06E400620F1D /* TLPhotoPicker in Frameworks */,
+				D8D8CFC92AA6E199008D5EBF /* TenjinSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,6 +173,8 @@
 				EB04E5EA2A5416E200C62C70 /* ViewController.swift */,
 				EBB13B7E2A5BBDF500620F1D /* BDsoEffectContentVC.swift */,
 				EBB13B852A5C08E000620F1D /* BDsoBeforePreVC.swift */,
+				D8A0F7112A6A2AB700E2E009 /* BDsoSubscribeStoreVC.swift */,
+				D8A0F7132A6A2ACA00E2E009 /* BDsoOpenGuideVC.swift */,
 				EB04E62B2A555FFF00C62C70 /* BDsoToManager.swift */,
 				EBB13BB12A5D901800620F1D /* TestImage.swift */,
 				EBB13BB32A5D908200620F1D /* basestring.txt */,
@@ -168,12 +183,16 @@
 				EB04E5EC2A5416E200C62C70 /* Main.storyboard */,
 				EB04E5EF2A5416E500C62C70 /* Assets.xcassets */,
 				EB04E5F12A5416E500C62C70 /* LaunchScreen.storyboard */,
+				D8A0F75A2A8DE4D800E2E009 /* configstore.storekit */,
 				EB04E5F42A5416E500C62C70 /* Info.plist */,
 				EB04E62E2A55665700C62C70 /* Poppins-Bold.ttf */,
 				EB04E6312A55665800C62C70 /* Poppins-Light.ttf */,
 				EB04E62D2A55665700C62C70 /* Poppins-Medium.ttf */,
 				EB04E62F2A55665700C62C70 /* Poppins-Regular.ttf */,
 				EB04E6302A55665800C62C70 /* Poppins-SemiBold.ttf */,
+				D8D8CFCB2AA6E313008D5EBF /* TAedView.h */,
+				D8D8CFCC2AA6E313008D5EBF /* TAedView.m */,
+				D8D8CFCA2AA6E313008D5EBF /* BDsoSharpenImage-Bridging-Header.h */,
 			);
 			path = BDsoSharpenImage;
 			sourceTree = "<group>";
@@ -218,6 +237,8 @@
 				EB04E6292A555A0000C62C70 /* BDsoFeatureTypeCollection.swift */,
 				EBE2B3AC2A55953500AF393E /* BDsoFeaturePreviewList.swift */,
 				EBB13B802A5BE4DA00620F1D /* BDsoEffectPreview.swift */,
+				D8A0F7562A8D011700E2E009 /* BDsoSplashPageOne.swift */,
+				D8A0F7582A8D013000E2E009 /* BDsoSplashPageTwo.swift */,
 			);
 			path = PageViews;
 			sourceTree = "<group>";
@@ -241,7 +262,7 @@
 			);
 			name = BDsoSharpenImage;
 			packageProductDependencies = (
-				EBB13B832A5C06E400620F1D /* TLPhotoPicker */,
+				D8D8CFC82AA6E199008D5EBF /* TenjinSDK */,
 			);
 			productName = BDsoSharpenImage;
 			productReference = EB04E5E32A5416E200C62C70 /* BDsoSharpenImage.app */;
@@ -259,6 +280,7 @@
 				TargetAttributes = {
 					EB04E5E22A5416E200C62C70 = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -272,7 +294,7 @@
 			);
 			mainGroup = EB04E5DA2A5416E200C62C70;
 			packageReferences = (
-				EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
+				D8D8CFC72AA6E199008D5EBF /* XCRemoteSwiftPackageReference "tenjin-ios-spm" */,
 			);
 			productRefGroup = EB04E5E42A5416E200C62C70 /* Products */;
 			projectDirPath = "";
@@ -350,11 +372,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB04E62A2A555A0000C62C70 /* BDsoFeatureTypeCollection.swift in Sources */,
+				D8D8CFCD2AA6E313008D5EBF /* TAedView.m in Sources */,
 				EBB13B7F2A5BBDF500620F1D /* BDsoEffectContentVC.swift in Sources */,
 				EBE2B3AD2A55953500AF393E /* BDsoFeaturePreviewList.swift in Sources */,
+				D8A0F7142A6A2ACA00E2E009 /* BDsoOpenGuideVC.swift in Sources */,
 				EBB13B862A5C08E000620F1D /* BDsoBeforePreVC.swift in Sources */,
 				EBB13BB22A5D901800620F1D /* TestImage.swift in Sources */,
 				EBB13B882A5C1B7A00620F1D /* BDsoNetManager.swift in Sources */,
+				D8A0F7572A8D011700E2E009 /* BDsoSplashPageOne.swift in Sources */,
 				D8EEACF72A6101590096A62E /* CGPoint+Utils.swift in Sources */,
 				EB04E5EB2A5416E200C62C70 /* ViewController.swift in Sources */,
 				D8EEACFB2A61019F0096A62E /* Transformable.swift in Sources */,
@@ -368,8 +393,10 @@
 				EB04E5E72A5416E200C62C70 /* AppDelegate.swift in Sources */,
 				D8EEACF52A61012F0096A62E /* EditScanCornerView.swift in Sources */,
 				EB04E62C2A555FFF00C62C70 /* BDsoToManager.swift in Sources */,
+				D8A0F7122A6A2AB700E2E009 /* BDsoSubscribeStoreVC.swift in Sources */,
 				EBB13B812A5BE4DA00620F1D /* BDsoEffectPreview.swift in Sources */,
 				EB04E5FC2A5419F700C62C70 /* ViewChainExtension.swift in Sources */,
+				D8A0F7592A8D013000E2E009 /* BDsoSplashPageTwo.swift in Sources */,
 				EB04E5E92A5416E200C62C70 /* SceneDelegate.swift in Sources */,
 				D8EEACF32A6100E00096A62E /* ZoomGestureController.swift in Sources */,
 				EB04E6032A54247A00C62C70 /* BDsoSharSubscbeManager.swift in Sources */,
@@ -518,15 +545,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BDsoSharpenImage/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs your camera permission to take photos and make your photos perform a series of special effects.\n\n\nGPT引擎\nGPT风格：\n\n默认\n";
+				INFOPLIST_KEY_CFBundleDisplayName = "Sharpen Image";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs your camera permission to take photos and make your photos perform a series of special effects.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "App needs your photo gallery permission to choose photos and make your photos perform a series of special effects.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "App needs your photo gallery permission to choose photos and make your photos perform a series of special effects.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We will use your data to provide a better and personalized ad experience.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -546,6 +577,8 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BDsoSharpenImage/BDsoSharpenImage-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -557,15 +590,19 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = BDsoSharpenImage/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs your camera permission to take photos and make your photos perform a series of special effects.\n\n\nGPT引擎\nGPT风格：\n\n默认\n";
+				INFOPLIST_KEY_CFBundleDisplayName = "Sharpen Image";
+				INFOPLIST_KEY_NSCameraUsageDescription = "The app needs your camera permission to take photos and make your photos perform a series of special effects.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "App needs your photo gallery permission to choose photos and make your photos perform a series of special effects.";
 				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "App needs your photo gallery permission to choose photos and make your photos perform a series of special effects.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "We will use your data to provide a better and personalized ad experience.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -585,6 +622,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BDsoSharpenImage/BDsoSharpenImage-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -614,21 +652,21 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */ = {
+		D8D8CFC72AA6E199008D5EBF /* XCRemoteSwiftPackageReference "tenjin-ios-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/tilltue/TLPhotoPicker.git";
+			repositoryURL = "https://github.com/tenjin/tenjin-ios-spm";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		EBB13B832A5C06E400620F1D /* TLPhotoPicker */ = {
+		D8D8CFC82AA6E199008D5EBF /* TenjinSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = EBB13B822A5C06E400620F1D /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
-			productName = TLPhotoPicker;
+			package = D8D8CFC72AA6E199008D5EBF /* XCRemoteSwiftPackageReference "tenjin-ios-spm" */;
+			productName = TenjinSDK;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

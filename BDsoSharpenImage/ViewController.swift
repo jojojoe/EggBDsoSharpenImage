@@ -19,9 +19,36 @@ class ViewController: UIViewController {
     
     var featureTitleLabel = UILabel()
     var featureInfoDesLabel = UILabel()
+    let upoproBtn = UIButton()
+
+    func updateProBtnStatus() {
+        if BDsoSharSubscbeManager.default.inSubscription {
+            upoproBtn.isHidden = true
+        } else {
+            upoproBtn.isHidden = false
+        }
+    }
+    
+    func addnoti() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateContentProStatus(noti: )), name: NSNotification.Name(rawValue: SubNotificationKeys.success), object: nil)
+
+    }
+
+    @objc func updateContentProStatus(noti: Notification) {
+        DispatchQueue.main.async {
+            self.updateProBtnStatus()
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addnoti()
         setupContentView()
         updateCurrentEffectStatus(currentIdx: IndexPath(item: 0, section: 0))
     }
@@ -92,8 +119,10 @@ class ViewController: UIViewController {
         settingBtn.titleLabel?.adjustsFontSizeToFitWidth = true
         
         //
-        /*
-        let upoproBtn = UIButton()
+       // /*
+
+        
+        upoproBtn
             .adhere(toSuperview: view) {
                 $0.right.equalToSuperview().offset(-20)
                 $0.centerY.equalTo(settingBtn.snp.centerY).offset(0)
@@ -102,7 +131,8 @@ class ViewController: UIViewController {
             }
             .image(UIImage(named: "homeproicon"))
             .target(target: self, action: #selector(upoproBtnClick), event: .touchUpInside)
-        */
+
+       // */
         //
         let cellw: CGFloat = CGFloat(Int((UIScreen.width() - (BDsoToManager.default.cpadding * CGFloat((BDsoToManager.default.featureList.count + 1)))) / CGFloat(BDsoToManager.default.featureList.count)))
         let cellh: CGFloat = cellw + 16
@@ -214,7 +244,7 @@ class ViewController: UIViewController {
     }
     
     @objc func settingBtnClick() {
-        
+        BDsoSharSubscbeManager.default.giveTapVib()
         self.sideMenuController?.showLeftView()
         if let setvc = self.sideMenuController?.leftViewController as? BDsoShareSettingVC {
             setvc.viewWillAppear(true)
@@ -222,7 +252,10 @@ class ViewController: UIViewController {
     }
     
     @objc func upoproBtnClick() {
-        
+        BDsoSharSubscbeManager.default.giveTapVib()
+        let vc = BDsoSubscribeStoreVC()
+        vc.modalPresentationStyle = .fullScreen
+        self.present(vc, animated: true)
     }
 }
 

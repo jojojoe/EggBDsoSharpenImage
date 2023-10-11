@@ -12,10 +12,10 @@ import SwifterSwift
 import DeviceKit
 
 extension UIFont {
-    static let FontName_PoppinsLight = "Poppins"
-    static let FontName_PoppinsRegular = "Poppins"
-    static let FontName_PoppinsMedium = "Poppins"
-    static let FontName_PoppinsSemiBold = "Poppins"
+    static let FontName_PoppinsLight = "Poppins-Light"
+    static let FontName_PoppinsRegular = "Poppins-Regular"
+    static let FontName_PoppinsMedium = "Poppins-Medium"
+    static let FontName_PoppinsSemiBold = "Poppins-SemiBold"
     static let FontName_PoppinsBold = "Poppins"
 }
 

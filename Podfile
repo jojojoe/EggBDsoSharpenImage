@@ -29,6 +29,6 @@ target 'BDsoSharpenImage' do
   pod 'ScalingCarousel'
   pod 'EllipsePageControl'
   pod 'SwiftyTimer'
-  
-  
+  pod "TLPhotoPicker"
+#  pod 'TenjinSDK'
 end

@@ -17,6 +17,12 @@ enum ProcessingStep {
     case downloadSave
 }
 
+enum CurrentActionStatue {
+    case none
+    case save
+    case share
+}
+
 class BDsoBeforePreVC: UIViewController {
     
     var originImg: UIImage
@@ -25,6 +31,7 @@ class BDsoBeforePreVC: UIViewController {
     let contentImgV = UIImageView()
     let shareBtn = UIButton()
     let downloadSaveBtn = UIButton()
+    let duibiBtn = UIButton()
     let processedDescribeLabel = UILabel()
     let processedCountLabel = UILabel()
     let processedChecknowBtn = UIButton()
@@ -37,7 +44,8 @@ class BDsoBeforePreVC: UIViewController {
     var loadingPenddingTime: Int = 0
     private let radarAnimation = "radarAnimation"
     var layoutSubsViewOnce = Once()
-    var isCurrentSaveClick = true
+//    var isCurrentSaveClick = true
+    var actionStatus: CurrentActionStatue = .none
     //
     private var quad: Quadrilateral
     private var quadViewWidthConstraint = NSLayoutConstraint()
@@ -67,8 +75,9 @@ class BDsoBeforePreVC: UIViewController {
     
     
     init(originImg: UIImage) {
-        self.originImg = originImg
-        self.quad = BDsoBeforePreVC.defaultQuad(forImage: originImg)
+        let (img, _) = BDsoToManager.default.processBase64Img(img: originImg)
+        self.originImg = img
+        self.quad = BDsoBeforePreVC.defaultQuad(forImage: img)
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -172,7 +181,8 @@ class BDsoBeforePreVC: UIViewController {
             guard let `self` = self else {return}
             DispatchQueue.main.async {
                 if let qua = self.quadView.quad {
-                    self.quad = qua
+                    let scaledQuad = qua.scale(self.quadView.bounds.size, self.originImg.size)
+                    self.quad = scaledQuad
                 }
             }
         }
@@ -209,6 +219,18 @@ class BDsoBeforePreVC: UIViewController {
             $0.top.equalTo(backBtn.snp.bottom).offset(30)
             $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-140)
         }
+        
+        duibiBtn.adhere(toSuperview: view) {
+            $0.right.equalToSuperview().offset(-24)
+            $0.bottom.equalTo(contentBgV.snp.bottom).offset(-20)
+            $0.width.height.equalTo(40)
+        }
+        duibiBtn.setImage(UIImage(named: "dibii"), for: .normal)
+        duibiBtn.backgroundColor = .clear
+        duibiBtn.addTarget(self, action: #selector(duibiBtnClickTouchDown), for: .touchDown)
+        duibiBtn.addTarget(self, action: #selector(duibiBtnClickTouchUp), for: .touchUpInside)
+        duibiBtn.addTarget(self, action: #selector(duibiBtnClickTouchUp), for: .touchUpOutside)
+        
         //
         
         //
@@ -358,6 +380,7 @@ class BDsoBeforePreVC: UIViewController {
     
   
     @objc func backBtnClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         if self.navigationController != nil {
             self.navigationController?.popViewController(animated: true)
         } else {
@@ -366,38 +389,101 @@ class BDsoBeforePreVC: UIViewController {
     }
     
     @objc func shareBtnClick() {
-        self.isCurrentSaveClick = false
+        BDsoSharSubscbeManager.default.giveTapVib()
+        actionStatus = .share
         saveImgsToAlbumOrShare()
+        if BDsoSharSubscbeManager.default.inSubscription {
+            
+        } else {
+            showSubscribeVC()
+        }
         
-        
+    }
+    
+    func showSubscribeVC() {
+        let vc = BDsoSubscribeStoreVC()
+        self.navigationController?.pushViewController(vc, animated: true)
+//        vc.modalPresentationStyle = .fullScreen
+//        self.present(vc, animated: true)
+        vc.purchaseSuccessBlock = { [weak self] in
+            guard let `self` = self else {return}
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
+//                self.processCheckAction()
+            }
+        }
+//        vc.pageDisappearBlock = {
+//            [weak self] in
+//            guard let `self` = self else {return}
+//            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0) {
+//                self.navigationController?.popToRootViewController(animated: true)
+//            }
+//        }
     }
     
     @objc func startBtnClick() {
-        isProcessing = true
-        updateDownloadStatus(processingStep: .processStep1)
-        makeRadarAnimation(animalView: processingLoadingImgV)
-        if let token = BDsoNetManager.default.getTokenInfo() {
-            BDsoNetManager.default.accessTokey = token
-            processRequestImg()
-            debugPrint("token = \(token)")
-        } else {
-            BDsoNetManager.default.apiRequest(target: .requestToken) {[weak self] jsonObject, error in
-                guard let `self` = self else {return}
-                DispatchQueue.main.async {
-                    if let jsonObject_m = jsonObject {
-                        let accesstoken = jsonObject_m["access_token"].stringValue
-                        let expire = jsonObject_m["expires_in"].numberValue.doubleValue
-                        BDsoNetManager.default.saveTokenInfo(tokenStr: accesstoken, expiresTime: expire)
-                        BDsoNetManager.default.accessTokey = accesstoken
-                        self.processRequestImg()
+        BDsoSharSubscbeManager.default.giveTapVib()
+        
+        if BDsoSharSubscbeManager.default.inSubscription {
+            isProcessing = true
+            updateDownloadStatus(processingStep: .processStep1)
+            makeRadarAnimation(animalView: processingLoadingImgV)
+            if let token = BDsoNetManager.default.getTokenInfo() {
+                BDsoNetManager.default.accessTokey = token
+                processRequestImg()
+                debugPrint("token = \(token)")
+            } else {
+                BDsoNetManager.default.apiRequest(target: .requestToken) {[weak self] jsonObject, error in
+                    guard let `self` = self else {return}
+                    DispatchQueue.main.async {
+                        if let jsonObject_m = jsonObject {
+                            let accesstoken = jsonObject_m["access_token"].stringValue
+                            let expire = jsonObject_m["expires_in"].numberValue.doubleValue
+                            BDsoNetManager.default.saveTokenInfo(tokenStr: accesstoken, expiresTime: expire)
+                            BDsoNetManager.default.accessTokey = accesstoken
+                            self.processRequestImg()
+                            debugPrint("token api = \(accesstoken)")
+                        }
                     }
                 }
             }
+        } else {
+            isProcessing = true
+            updateDownloadStatus(processingStep: .processStep1)
+            makeRadarAnimation(animalView: processingLoadingImgV)
+            
+            let timer = Timer.after(2) {
+                [weak self] in
+                guard let `self` = self else {return}
+                if self.isProcessing {
+                    DispatchQueue.main.async {
+                        self.updateDownloadStatus(processingStep: .processStep2)
+                        Timer.after(2) {
+                            [weak self] in
+                            guard let `self` = self else {return}
+                            if self.isProcessing {
+                                DispatchQueue.main.async {
+                                    if let timer = self.loadingTimer {
+                                        timer.invalidate()
+                                        self.loadingTimer = nil
+                                    }
+                                    self.processingLoadingImgV.layer.removeAnimation(forKey: self.radarAnimation)
+                                    self.updateDownloadStatus(processingStep: .processStepFinish)
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
         }
+        
+        
+        
     }
     
     func processRequestImg() {
-        let base64str = BDsoToManager.default.processBase64Img(img: originImg)
+        let (_, base64str) = BDsoToManager.default.processBase64Img(img: originImg)
         if let base64str_m = base64str {
             if base64str_m == "error_1" {
                 self.showAlert(title: "Sorry", message: "Make sure that the longest side of the image is not four times higher than the shortest side")
@@ -421,10 +507,13 @@ class BDsoBeforePreVC: UIViewController {
         case .sharpen:
             outapi = .sharpen(imgBase64: imgBase64)
         case .enhancer:
-            outapi = .enhancer(imgBase64: imgBase64)
+//            outapi = .enhancer(imgBase64: imgBase64)
+            outapi = .denoise(imgBase64: imgBase64, option: 50)
         case .repair:
             
-            let scaledQuad = self.quad.scale(self.quadView.bounds.size, self.originImg.size)
+//            let scaledQuad = self.quad.scale(self.quadView.bounds.size, self.originImg.size)
+//            debugPrint("self.originImg.size = \(self.originImg.size)")
+            let scaledQuad = self.quad
             
             let w: Int = Int((scaledQuad.bottomRight.x) - (scaledQuad.topLeft.x))
             let h: Int = Int((scaledQuad.bottomRight.y) - (scaledQuad.topLeft.y))
@@ -432,7 +521,8 @@ class BDsoBeforePreVC: UIViewController {
             let offy: Int = Int(scaledQuad.topLeft.y)
             
             let arr: [[String: Int]] = [["width" : w, "top" : offy, "height" : h, "left" : offx]]
-            debugPrint("remove area = \(arr)")
+//            let arr: [[String: Int]] = [["width" : 100, "top" : 100, "height" : 100, "left" : 100]]
+//            debugPrint("remove area = \(arr)")
             outapi = .repair(imgBase64: imgBase64, rectangle: arr)
 //            if let arrjsonstr = self.dicToJsonString(dicArr: arr) {
 //
@@ -466,7 +556,7 @@ class BDsoBeforePreVC: UIViewController {
                                         if self.isProcessing {
                                             self.checkResultStatus()
                                             self.loadingPenddingTime += 1
-                                            if self.loadingPenddingTime == 12 {
+                                            if self.loadingPenddingTime == 120 {
                                                 self.requestTimeoutAlert()
                                             }
                                         }
@@ -507,14 +597,122 @@ class BDsoBeforePreVC: UIViewController {
                     }
                     let processedImgBase64 = jsonObject_m[imgKey].stringValue
                     if processedImgBase64.count >= 1 {
-                        debugPrint("processedImgBase64 - \(processedImgBase64)")
-                        if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
-                            debugPrint(img)
-                            self.processImg = img
+                        
+                        if BDsoToManager.default.currentSelectItem.ftype == .sharpen {
+                            let processApi1: OutAPI = .quwu(imgBase64: processedImgBase64)
+                            BDsoNetManager.default.apiRequest(target: processApi1) { jsonObject, responseCode in
+                                DispatchQueue.main.async {
+                                    if let jsonObject_m = jsonObject {
+                                        var imgKey: String = "image"
+                                        switch processApi1 {
+                                        case .denoise(_, _):
+                                            imgKey = "result"
+                                        default:
+                                            break
+                                        }
+                                        let processedImgBase64 = jsonObject_m[imgKey].stringValue
+                                        if processedImgBase64.count >= 1 {
+                                            let processApi2: OutAPI = .qingxiduzengqiang(imgBase64: processedImgBase64)
+                                            BDsoNetManager.default.apiRequest(target: processApi2) { jsonObject, responseCode in
+                                                DispatchQueue.main.async {
+                                                    if let jsonObject_m = jsonObject {
+                                                        var imgKey: String = "image"
+                                                        switch processApi2 {
+                                                        case .denoise(_, _):
+                                                            imgKey = "result"
+                                                        default:
+                                                            break
+                                                        }
+                                                        let processedImgBase64 = jsonObject_m[imgKey].stringValue
+                                                        if processedImgBase64.count >= 1 {
+                                                            if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
+                                                                self.processImg = img
+                                                            } else {
+                                                                debugPrint("processedImgBase64 - 未解析图片")
+                                                                self.requestTimeoutAlert()
+                                                            }
+                                                        } else {
+                                                            debugPrint("processedImgBase64 - 未解析出来")
+                                                            self.requestTimeoutAlert()
+                                                        }
+
+                                                    } else {
+                                                        self.requestTimeoutAlert()
+                                                    }
+                                                }
+                                            } failure: {[weak self] outerror in
+                                                guard let `self` = self else {return}
+                                                if let er = outerror {
+                                                    DispatchQueue.main.async {
+                                                        self.requestTimeoutAlert()
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            debugPrint("processedImgBase64 - 未解析出来")
+                                            self.requestTimeoutAlert()
+                                        }
+
+                                    } else {
+                                        self.requestTimeoutAlert()
+                                    }
+                                }
+                            } failure: {[weak self] outerror in
+                                guard let `self` = self else {return}
+                                if let er = outerror {
+                                    DispatchQueue.main.async {
+                                        self.requestTimeoutAlert()
+                                    }
+                                }
+                            }
+                        } else if BDsoToManager.default.currentSelectItem.ftype == .enhancer {
+                            let processApi: OutAPI = .sharpen(imgBase64: processedImgBase64)
+                            BDsoNetManager.default.apiRequest(target: processApi) { jsonObject, responseCode in
+                                DispatchQueue.main.async {
+                                    if let jsonObject_m = jsonObject {
+                                        var imgKey: String = "image"
+                                        switch processApi {
+                                        case .denoise(_, _):
+                                            imgKey = "result"
+                                        default:
+                                            break
+                                        }
+                                        let processedImgBase64 = jsonObject_m[imgKey].stringValue
+                                        if processedImgBase64.count >= 1 {
+                                            if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
+                                                self.processImg = img
+                                            } else {
+                                                debugPrint("processedImgBase64 - 未解析图片")
+                                                self.requestTimeoutAlert()
+                                            }
+                                        } else {
+                                            debugPrint("processedImgBase64 - 未解析出来")
+                                            self.requestTimeoutAlert()
+                                        }
+
+                                    } else {
+                                        self.requestTimeoutAlert()
+                                    }
+                                }
+                            } failure: {[weak self] outerror in
+                                guard let `self` = self else {return}
+                                if let er = outerror {
+                                    DispatchQueue.main.async {
+                                        self.requestTimeoutAlert()
+                                    }
+                                }
+                            }
                         } else {
-                            debugPrint("processedImgBase64 - 未解析图片")
-                            self.requestTimeoutAlert()
+                            if let img = BDsoToManager.default.processImgFrom(base64: processedImgBase64) {
+    //                            debugPrint(img)
+                                self.processImg = img
+                            } else {
+                                debugPrint("processedImgBase64 - 未解析图片")
+                                self.requestTimeoutAlert()
+                            }
                         }
+                      
+                        
                     } else {
                         debugPrint("processedImgBase64 - 未解析出来")
                         self.requestTimeoutAlert()
@@ -538,11 +736,16 @@ class BDsoBeforePreVC: UIViewController {
     }
     
     @objc func saveBtnClick() {
-        self.isCurrentSaveClick = true
+        BDsoSharSubscbeManager.default.giveTapVib()
+        actionStatus = .save
         saveImgsToAlbumOrShare()
+//        self.isCurrentSaveClick = true
+        
+
     }
 
     @objc func processedCancelBtnClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         isProcessing = false
         self.updateDownloadStatus(processingStep: .before)
         if self.processImg == nil {
@@ -552,6 +755,36 @@ class BDsoBeforePreVC: UIViewController {
     }
     
     @objc func processedChecknowBtnClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
+        
+        if BDsoSharSubscbeManager.default.inSubscription {
+            processCheckAction()
+        } else {
+            
+            showSubscribeVC()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
+                [weak self] in
+                guard let `self` = self else {return}
+                DispatchQueue.main.async {
+                    self.isProcessing = false
+                    self.updateDownloadStatus(processingStep: .before)
+                }
+            }
+        }
+        
+//        if let img = self.processImg {
+//            self.updateProcessedImg(processedImg: img)
+//        }
+//        isProcessing = false
+//        self.updateDownloadStatus(processingStep: .downloadSave)
+//
+//        if BDsoToManager.default.currentSelectItem.ftype == .repair {
+//            self.quadView.isHidden = true
+//        }
+    }
+    
+    func processCheckAction() {
+         
         if let img = self.processImg {
             self.updateProcessedImg(processedImg: img)
         }
@@ -560,6 +793,17 @@ class BDsoBeforePreVC: UIViewController {
         
         if BDsoToManager.default.currentSelectItem.ftype == .repair {
             self.quadView.isHidden = true
+        }
+    }
+    
+    @objc func duibiBtnClickTouchDown() {
+        BDsoSharSubscbeManager.default.giveTapVib()
+        self.contentImgV.image = originImg
+    }
+    
+    @objc func duibiBtnClickTouchUp() {
+        if let img = processImg {
+            self.contentImgV.image = img
         }
     }
     
@@ -606,12 +850,12 @@ extension BDsoBeforePreVC {
         let imgs = [finishedImg]
         let status = PHPhotoLibrary.authorizationStatus()
         if status == .authorized {
-            if self.isCurrentSaveClick {
+            if self.actionStatus == .save {
                 saveToAlbumPhotoAction(images: imgs)
-            } else {
+            } else if self.actionStatus == .share {
                 shareAction(images: imgs)
             }
-            
+            actionStatus = .none
         } else if status == .notDetermined {
             PHPhotoLibrary.requestAuthorization(for: .readWrite) {[weak self] status in
                 guard let `self` = self else {return}
@@ -619,9 +863,9 @@ extension BDsoBeforePreVC {
                     if status != .authorized || status != .limited {
                         return
                     }
-                    if self.isCurrentSaveClick {
+                    if self.actionStatus == .save {
                         self.saveToAlbumPhotoAction(images: imgs)
-                    } else {
+                    } else if self.actionStatus == .share {
                         self.shareAction(images: imgs)
                     }
                     

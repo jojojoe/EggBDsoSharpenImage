@@ -144,6 +144,7 @@ class BDsoEffectContentVC: UIViewController {
     }
     
     @objc func backBtnClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         if self.navigationController != nil {
             self.navigationController?.popViewController(animated: true)
         } else {
@@ -152,10 +153,12 @@ class BDsoEffectContentVC: UIViewController {
     }
     
     @objc func selelPhotoAlbumClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         checkAlbumAuthorization()
     }
     
     @objc func selelCameraClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         showCameraIfAuthorized()
     }
     

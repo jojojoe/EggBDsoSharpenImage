@@ -121,27 +121,31 @@ class BDsoToManager: NSObject {
         currentSelectItem = sharpenItem
     }
     
-    func processBase64Img(img: UIImage) -> String? {
+    func processBase64Img(img: UIImage) -> (UIImage , String?) {
         let maxLenght = max(img.size.width, img.size.height)
         let minLenght = min(img.size.width, img.size.height)
         if (maxLenght / minLenght > 4.0) {
             
-            return "error_1"
+            return (img, "error_1")
         }
-        var targetImg: UIImage? = img
+        var targetImg: UIImage = img
         if maxLenght > 4000 {
             if img.size.width > img.size.height {
-                targetImg = img.scaled(toWidth: 2048)
+                if let im = img.scaled(toWidth: 2048) {
+                    targetImg = im
+                }
             } else {
-                targetImg = img.scaled(toHeight: 2048)
+                if let im = img.scaled(toHeight: 2048) {
+                    targetImg = im
+                } 
             }
         }
-        if let basestr = targetImg?.jpegBase64String(compressionQuality: 0.8) {
+        if let basestr = targetImg.jpegBase64String(compressionQuality: 0.8) {
             let encodeStr = self.urlEncodeString(basestr)
-            return encodeStr
+            return (targetImg, encodeStr)
         }
        
-        return nil
+        return (img, nil)
     }
     
     func processImgFrom(base64: String) -> UIImage? {

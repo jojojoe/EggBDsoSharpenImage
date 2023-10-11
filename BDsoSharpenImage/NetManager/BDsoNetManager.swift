@@ -96,7 +96,7 @@ extension BDsoNetManager {
                             let jsondata =  try JSON(data: response.data)
                             success?(jsondata, response.statusCode)
                         } catch let error {
-                            debugPrint("error- \(error)")
+//                            debugPrint("error- \(error)")
                             failure?(.networkFailure)
 
                         }
@@ -105,7 +105,7 @@ extension BDsoNetManager {
                         failure?(.networkFailure)
                     }
                 case let .failure(error):
-                    debugPrint("errorstr error = \(error)")
+//                    debugPrint("errorstr error = \(error)")
                     failure?(.networkFailure)
                 }
         }

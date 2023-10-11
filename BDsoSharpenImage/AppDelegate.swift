@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import TenjinSDK
+import AppTrackingTransparency
 
 /*
  产品名    Sharpen Image
@@ -22,6 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        TenjinSDK.getInstance("D5HDNUEHUKUH1YEZGNWVXKJUJWZCZAMU")
+        
 #if DEBUG
 // 打印所有字体名称
 for familyName in UIFont.familyNames {
@@ -31,7 +36,26 @@ for familyName in UIFont.familyNames {
     }
 }
 
+        TenjinSDK.debugLogs()
 #endif
+        
+        
+        
+        BDsoSharSubscbeManager.default.completeTransactions()
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            if #available(iOS 14, *) {
+                ATTrackingManager.requestTrackingAuthorization(completionHandler: { status in
+                    if status == .authorized {
+                        TenjinSDK.connect()
+                    }
+                })
+            } else {
+                TenjinSDK.connect()
+            }
+        }
+
+        
         return true
     }
 

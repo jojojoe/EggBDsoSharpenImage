@@ -35,6 +35,8 @@ enum OutAPI {
     case restoration(imgBase64: String)
     case enhancer(imgBase64: String)
     case enlarge(imgBase64: String)
+    case quwu(imgBase64: String)
+    case qingxiduzengqiang(imgBase64: String)
     
 }
 
@@ -66,6 +68,10 @@ extension OutAPI: SugarTargetType {
             return .post("contrast_enhance")
         case .enlarge( _):
             return .post("image_quality_enhance")
+        case .quwu(imgBase64: _):
+            return .post("dehaze")
+        case .qingxiduzengqiang(imgBase64: _):
+            return .post("image_definition_enhance")
         }
     }
 
@@ -78,8 +84,8 @@ extension OutAPI: SugarTargetType {
                                                bodyEncoding: URLEncoding.httpBody,
                                                urlParameters: urlParameters)
         case .sharpen(let imgBase64):
-            debugPrint("request api token = \(BDsoNetManager.default.accessTokey)")
-            debugPrint("imgBase64 = \(imgBase64)")
+//            debugPrint("request api token = \(BDsoNetManager.default.accessTokey)")
+//            debugPrint("imgBase64 = \(imgBase64)")
             let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]
             let params = ["image": imgBase64] as [String : Any]
             return .requestCompositeParameters(bodyParameters: params,
@@ -110,6 +116,18 @@ extension OutAPI: SugarTargetType {
                                                bodyEncoding: URLEncoding.httpBody,
                                                urlParameters: urlParameters)
         case .enlarge(let imgBase64):
+            let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]
+            let params = ["image": imgBase64] as [String : Any]
+            return .requestCompositeParameters(bodyParameters: params,
+                                               bodyEncoding: URLEncoding.httpBody,
+                                               urlParameters: urlParameters)
+        case .quwu(let imgBase64):
+            let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]
+            let params = ["image": imgBase64] as [String : Any]
+            return .requestCompositeParameters(bodyParameters: params,
+                                               bodyEncoding: URLEncoding.httpBody,
+                                               urlParameters: urlParameters)
+        case .qingxiduzengqiang(let imgBase64):
             let urlParameters = ["access_token": BDsoNetManager.default.accessTokey]
             let params = ["image": imgBase64] as [String : Any]
             return .requestCompositeParameters(bodyParameters: params,

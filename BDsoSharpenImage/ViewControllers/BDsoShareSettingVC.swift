@@ -48,7 +48,7 @@ class BDsoShareSettingVC: UIViewController {
 
     var collection: UICollectionView!
     var basicSettingList: [SettingContentItem] = []
-//    let goldpro = SettingContentItem(settype: .progum)
+    let goldpro = SettingContentItem(settype: .progum)
     let share = SettingContentItem(settype: .share)
     let terms = SettingContentItem(settype: .terms)
     let privacy = SettingContentItem(settype: .privacy)
@@ -57,27 +57,37 @@ class BDsoShareSettingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        basicSettingList = [goldpro, share, rateus, privacy, terms]
-        basicSettingList = [share, rateus, privacy, terms]
+//        basicSettingList = [share, rateus, privacy, terms]
+        
         setupContent()
+        addnoti()
+        updateSubscribeStatus()
     }
     
-//    func addnoti() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(updateContentProStatus(noti: )), name: NSNotification.Name(rawValue: SubNotificationKeys.success), object: nil)
-//
-//    }
-//
-//    @objc func updateContentProStatus(noti: Notification) {
-//        DispatchQueue.main.async {
-//            if FPoodPHotoConfigSubscribePro.default.inSubscription {
-//                self.basicList = [self.feedback, self.terms, self.privacy]
-//                self.collection.reloadData()
-//            }
-//        }
-//    }
-//
-//    deinit {
-//        NotificationCenter.default.removeObserver(self)
-//    }
+    func addnoti() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateContentProStatus(noti: )), name: NSNotification.Name(rawValue: SubNotificationKeys.success), object: nil)
+
+    }
+
+    @objc func updateContentProStatus(noti: Notification) {
+        DispatchQueue.main.async {
+            self.updateSubscribeStatus()
+        }
+    }
+    
+    func updateSubscribeStatus() {
+        if BDsoSharSubscbeManager.default.inSubscription {
+            self.basicSettingList = [share, rateus, privacy, terms]
+            self.collection.reloadData()
+        } else {
+            self.basicSettingList = [goldpro, share, rateus, privacy, terms]
+            self.collection.reloadData()
+        }
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     
     func setupContent() {
@@ -113,6 +123,7 @@ class BDsoShareSettingVC: UIViewController {
     }
 
     @objc func bbtnClick() {
+        BDsoSharSubscbeManager.default.giveTapVib()
         self.sideMenuController?.hideLeftView()
     }
 
@@ -168,7 +179,9 @@ extension BDsoShareSettingVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = basicSettingList[indexPath.item]
         if item.settype == .progum {
-            
+            let vc = BDsoSubscribeStoreVC()
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: true)
         } else if item.settype == .share {
             BDsoToManager.default.userShareAction(viewCon: self)
         } else if item.settype == .rateus {
@@ -254,7 +267,7 @@ class BDsoSettingCell: UICollectionViewCell {
                 $0.height.equalTo(21)
                 $0.width.equalTo(156)
             }
-            .font(UIFont.FontName_PoppinsRegular, 14)
+            .font(UIFont.FontName_PoppinsSemiBold, 14)
             .color(.white)
             .text("Upgrade to Premium".uppercased())
             .adjustsFontSizeToFitWidth()
@@ -282,4 +295,5 @@ class BDsoSettingCell: UICollectionViewCell {
             .image("")
         
     }
+    
 }
